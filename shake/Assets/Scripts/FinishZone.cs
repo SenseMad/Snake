@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using GamePush;
+//using GamePush;
 
 public class FinishZone : MonoBehaviour
 {

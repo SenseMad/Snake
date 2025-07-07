@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using GamePush;
+//using GamePush;
 
 public class LevelManager : MonoBehaviour
 {
@@ -246,8 +246,8 @@ public class LevelManager : MonoBehaviour
 	UpdateUICount();
 	Paused = false;
 
-    if (GameManager.Instance.GamePushManager.IsInit)
-      GP_Ads.ShowFullscreen();
+    /*if (GameManager.Instance.GamePushManager.IsInit)
+      GP_Ads.ShowFullscreen();*/
   }
 
   public void Defeat(DefeatType _type)
@@ -266,8 +266,8 @@ public class LevelManager : MonoBehaviour
     GameManager.Instance.CameraManager.TopDownCameraArm.Over();
 	gameState = gameStates.defeat;
 
-    if (GameManager.Instance.GamePushManager.IsInit)
-      GP_Ads.ShowFullscreen();
+    /*if (GameManager.Instance.GamePushManager.IsInit)
+      GP_Ads.ShowFullscreen();*/
 
     bool flag = LocalizationSync.IsChinese();
 	switch (_type)

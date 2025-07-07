@@ -1,4 +1,4 @@
-using GamePush;
+//using GamePush;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
@@ -46,10 +46,11 @@ public class InputManager : MonoBehaviour
 
   private void DetectPlatform()
   {
-    if (GP_Device.IsMobile())
+    _currentInputType = InputType.PC;
+    /*if (GP_Device.IsMobile())
       _currentInputType = InputType.Mobile;
     else
-      _currentInputType = InputType.PC;
+      _currentInputType = InputType.PC;*/
   }
 
   public void SetInputType(InputType inputType)

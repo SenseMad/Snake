@@ -1,5 +1,5 @@
 using UnityEngine;
-using GamePush;
+//using GamePush;
 
 public class GamePushManager : MonoBehaviour
 {
@@ -9,7 +9,7 @@ public class GamePushManager : MonoBehaviour
 
   private void OnEnable()
   {
-    GP_Init.OnReady += GP_Init_OnReady;
+    //GP_Init.OnReady += GP_Init_OnReady;
   }
 
   private void GP_Init_OnReady()

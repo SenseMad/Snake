@@ -1,5 +1,5 @@
 using Com.LuisPedroFonseca.ProCamera2D;
-using GamePush;
+//using GamePush;
 using System;
 using UnityEngine;
 
@@ -153,8 +153,8 @@ public class Combat : MonoBehaviour
 
   private void Update()
   {
-    if (Input.GetKeyDown(KeyCode.Y) && dead && GameManager.Instance.LevelManager.SurvivalMode)
-      GP_Ads.ShowRewarded("SURVIVAL_REVIVE", OnRewardedReward, OnRewardedStart);
+    /*if (Input.GetKeyDown(KeyCode.Y) && dead && GameManager.Instance.LevelManager.SurvivalMode)
+      GP_Ads.ShowRewarded("SURVIVAL_REVIVE", OnRewardedReward, OnRewardedStart);*/
 
     if (!gameStarted)
 	{
@@ -436,7 +436,7 @@ public class Combat : MonoBehaviour
 	}
   }
 
-  private void OnRewardedStart()
+  /*private void OnRewardedStart()
   {
     GameManager.Instance.GamePushManager.SetAdsRunning(true);
   }
@@ -456,7 +456,7 @@ public class Combat : MonoBehaviour
         gameManager.GamePushManager.SetAdsRunning(false);
         break;
     }
-  }
+  }*/
 
   private void OnTriggerEnter(Collider other)
   {
