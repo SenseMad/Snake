@@ -185,21 +185,15 @@ public class LevelManager : MonoBehaviour
 	{
 	  if (UnityEngine.Input.GetKeyDown(KeyCode.R))
 	  {
-		TryLoadLevel(levelIndex);
-	  }
+		RestartLevel();
+
+      }
 	}
 	else if (gameState == gameStates.success)
 	{
 	  if (UnityEngine.Input.GetKeyDown(KeyCode.R))
 	  {
-		if (levelInfo.hasNextLevel)
-		{
-		  TryLoadLevel(levelIndex + 1);
-		}
-		else
-		{
-		  TryLoadLevel(0);
-		}
+		NextLevel();
 	  }
 	}
 	else if (!paused)
@@ -220,6 +214,45 @@ public class LevelManager : MonoBehaviour
       GameManager.Instance.CameraManager.RenderCamera.FadeIn();
       pointer.gameObject.SetActive(true);
       GameManager.Instance.TimeScaleManager.ResetTimeScales();
+    }
+  }
+
+  public void RestartLevel()
+  {
+    TryLoadLevel(levelIndex);
+  }
+  
+  public void NextLevel()
+  {
+    if (levelInfo.hasNextLevel)
+    {
+      TryLoadLevel(levelIndex + 1);
+    }
+    else
+    {
+      TryLoadLevel(0);
+    }
+  }
+
+  public void StartSurvivalZone()
+  {
+    GP_Ads.ShowRewarded("SURVIVAL", StartAdsSurvivalZone, OnRewardedStart);
+  }
+
+  private void OnRewardedStart()
+  {
+    GameManager.Instance.GamePushManager.SetAdsRunning(true);
+  }
+
+  private void StartAdsSurvivalZone(string parValue)
+  {
+    switch (parValue)
+    {
+      case "SURVIVAL":
+        GameManager.Instance.LevelManager.SetSurvivalMode(true);
+        GameManager.Instance.GamePushManager.SetAdsRunning(false);
+        GameManager.Instance.LevelManager.TryLoadLevel(999, false);
+        break;
     }
   }
 

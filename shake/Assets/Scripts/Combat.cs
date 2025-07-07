@@ -153,8 +153,8 @@ public class Combat : MonoBehaviour
 
   private void Update()
   {
-    if (Input.GetKeyDown(KeyCode.Y) && dead && GameManager.Instance.LevelManager.SurvivalMode)
-      GP_Ads.ShowRewarded("SURVIVAL_REVIVE", OnRewardedReward, OnRewardedStart);
+    if (Input.GetKeyDown(KeyCode.Y))
+      Revival();
 
     if (!gameStarted)
 	{
@@ -202,6 +202,15 @@ public class Combat : MonoBehaviour
 	  }
 	}
 	animator.SetFloat("Speed", animatorSpeed);
+  }
+
+  public void Revival()
+  {
+    if (!dead || !GameManager.Instance.LevelManager.SurvivalMode)
+      return;
+
+	Debug.Log("!");
+    GP_Ads.ShowRewarded("SURVIVAL_REVIVE", OnRewardedReward, OnRewardedStart);
   }
 
   public void RestoreHealth()

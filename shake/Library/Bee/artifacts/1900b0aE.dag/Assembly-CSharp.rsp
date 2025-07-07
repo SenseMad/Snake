@@ -372,7 +372,6 @@
 "Assets/Joystick Pack/Scripts/Joysticks/FloatingJoystick.cs"
 "Assets/Joystick Pack/Scripts/Joysticks/VariableJoystick.cs"
 "Assets/Scripts/ActiveByConditions.cs"
-"Assets/Scripts/ADS/AdsManager.cs"
 "Assets/Scripts/ADS/GamePushManager.cs"
 "Assets/Scripts/AdvancedSettings.cs"
 "Assets/Scripts/Aimer.cs"

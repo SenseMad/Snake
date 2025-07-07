@@ -52,29 +52,12 @@ public class SurvivalZone : FinishZone
         GameManager.Instance.UIManager.AccessToLevelAds(true);
 
         if (Input.GetKeyDown(KeyCode.R))
-          GP_Ads.ShowRewarded("SURVIVAL", OnRewardedReward, OnRewardedStart);
+          GameManager.Instance.LevelManager.StartSurvivalZone();
       }
       else
       {
         GameManager.Instance.UIManager.AccessToLevelAds(false);
       }
-    }
-  }
-
-  private void OnRewardedStart()
-  {
-    GameManager.Instance.GamePushManager.SetAdsRunning(true);
-  }
-
-  private void OnRewardedReward(string parValue)
-  {
-    switch (parValue)
-    {
-      case "SURVIVAL":
-        GameManager.Instance.LevelManager.SetSurvivalMode(true);
-        GameManager.Instance.GamePushManager.SetAdsRunning(false);
-        GameManager.Instance.LevelManager.TryLoadLevel(999, false);
-        break;
     }
   }
 }

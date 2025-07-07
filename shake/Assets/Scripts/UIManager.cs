@@ -4,8 +4,14 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
   [SerializeField]
-  private Canvas UiCanvas;
+  private Canvas uiCanvas;
 
+  [Header("References")]
+  [SerializeField] private UIFailedPanel _failedPanel;
+  [SerializeField] private UISuccessPanel _successPanel;
+  [SerializeField] private UIAccessToLevelAds _accessToLevelAds;
+
+  [Space]
   [SerializeField]
   private Image healthBarImage;
 
@@ -22,19 +28,7 @@ public class UIManager : MonoBehaviour
   public Color greenColor;
 
   [SerializeField]
-  private CanvasGroup defeatCanvasGroup;
-
-  [SerializeField]
-  private Text defeatStringText;
-
-  [SerializeField]
-  private CanvasGroup successCanvasGroup;
-
-  [SerializeField]
   private CanvasGroup accessToLevelAdsCanvasGroup;
-
-  [SerializeField]
-  private CanvasGroup revivalCanvasGroup;
 
   [SerializeField]
   private AnimationCurve overShowCurve;
@@ -44,6 +38,9 @@ public class UIManager : MonoBehaviour
 
   [SerializeField]
   private GameObject hudPanel;
+
+  [SerializeField]
+  private GameObject mobileUI;
 
   private float overShowTimer;
 
@@ -58,18 +55,14 @@ public class UIManager : MonoBehaviour
 	healthBarMat = healthBarImage.material;
   }
 
-  private void Start()
-  {
-  }
-
   public void Init(Camera _camera)
   {
-	UiCanvas.worldCamera = _camera;
-	UiCanvas.planeDistance = 1f;
-	defeatCanvasGroup.alpha = 0f;
-	defeatCanvasGroup.gameObject.SetActive(value: false);
-	successCanvasGroup.alpha = 0f;
-	successCanvasGroup.gameObject.SetActive(value: false);
+	_failedPanel.Initialize();
+	_successPanel.Initialize();
+	_accessToLevelAds.Initialize();
+
+    uiCanvas.worldCamera = _camera;
+	uiCanvas.planeDistance = 1f;
 	hudPanel.SetActive(value: true);
 	over = false;
 	overShowTimer = 0f;
@@ -99,15 +92,13 @@ public class UIManager : MonoBehaviour
 	{
 	  overShowTimer += Time.unscaledDeltaTime;
 	  overShowTimer = Mathf.Min(overShowTimer, overShowTime);
-	  if (!overIsSuccess)
-	  {
-		defeatCanvasGroup.alpha = overShowCurve.Evaluate(overShowTimer / overShowTime);
-	  }
-	  else
-	  {
-		successCanvasGroup.alpha = overShowCurve.Evaluate(overShowTimer / overShowTime);
-	  }
-	}
+
+	  float alpha = overShowCurve.Evaluate(overShowTimer / overShowTime);
+      if (!overIsSuccess)
+        _failedPanel.SetAlpha(alpha);
+      else
+        _successPanel.SetAlpha(alpha);
+    }
   }
 
   public void RestoreHUD()
@@ -115,40 +106,50 @@ public class UIManager : MonoBehaviour
     over = false;
     overShowTimer = 0f;
 
-    defeatCanvasGroup.alpha = 0f;
-    defeatCanvasGroup.gameObject.SetActive(false);
-
-    successCanvasGroup.alpha = 0f;
-    successCanvasGroup.gameObject.SetActive(false);
+	_failedPanel.Hide();
+	_successPanel.Hide();
 
     hudPanel.SetActive(true);
+
+    if (InputManager.Instance.CurrentInputType == InputType.Mobile)
+      mobileUI.SetActive(true);
   }
 
   public void Defeat(string _defeatString)
   {
-	overIsSuccess = false;
-	defeatStringText.text = _defeatString;
-	hudPanel.SetActive(value: false);
-	over = true;
-	defeatCanvasGroup.gameObject.SetActive(value: true);
+    overIsSuccess = false;
+    over = true;
+
+    _failedPanel.Show(_defeatString);
+    hudPanel.SetActive(false);
+
+	if (InputManager.Instance.CurrentInputType == InputType.Mobile)
+	  mobileUI.SetActive(false);
   }
 
   public void Success()
   {
 	overIsSuccess = true;
-	hudPanel.SetActive(value: false);
-	over = true;
-	successCanvasGroup.gameObject.SetActive(value: true);
+    over = true;
+
+	_successPanel.Show();
+    hudPanel.SetActive(false);
+
+    if (InputManager.Instance.CurrentInputType == InputType.Mobile)
+      mobileUI.SetActive(false);
   }
 
   public void AccessToLevelAds(bool parValue)
   {
-	accessToLevelAdsCanvasGroup.gameObject.SetActive(parValue);
+	_accessToLevelAds.SetActive(parValue);
   }
 
   public void Revival(bool parValue)
   {
-    revivalCanvasGroup.gameObject.SetActive(parValue);
+	_failedPanel.SetRevivalButton(parValue);
+
+    if (InputManager.Instance.CurrentInputType == InputType.Mobile)
+      mobileUI.SetActive(!parValue);
   }
 
   public void ChangeTextAlpha(Text _text, float alpha)
