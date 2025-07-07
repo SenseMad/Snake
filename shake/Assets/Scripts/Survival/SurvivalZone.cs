@@ -1,4 +1,4 @@
-//using GamePush;
+using GamePush;
 using UnityEngine;
 
 public class SurvivalZone : FinishZone
@@ -51,8 +51,8 @@ public class SurvivalZone : FinishZone
       {
         GameManager.Instance.UIManager.AccessToLevelAds(true);
 
-        /*if (Input.GetKeyDown(KeyCode.R))
-          GP_Ads.ShowRewarded("SURVIVAL", OnRewardedReward, OnRewardedStart);*/
+        if (Input.GetKeyDown(KeyCode.R))
+          GP_Ads.ShowRewarded("SURVIVAL", OnRewardedReward, OnRewardedStart);
       }
       else
       {
@@ -61,7 +61,7 @@ public class SurvivalZone : FinishZone
     }
   }
 
-  /*private void OnRewardedStart(string _)
+  private void OnRewardedStart()
   {
     GameManager.Instance.GamePushManager.SetAdsRunning(true);
   }
@@ -76,5 +76,5 @@ public class SurvivalZone : FinishZone
         GameManager.Instance.LevelManager.TryLoadLevel(999, false);
         break;
     }
-  }*/
+  }
 }

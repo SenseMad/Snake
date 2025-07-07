@@ -33,7 +33,7 @@ public class MobileUI : MonoBehaviour
 
   private void OnEnable()
   {
-    SetupUI();
+    inputManager.OnDeviceSelection += InputManager_OnDeviceSelection;
 
     _aimButton.onClick.AddListener(inputManager.OnAimButtonPressed);
 
@@ -42,6 +42,8 @@ public class MobileUI : MonoBehaviour
 
   private void OnDisable()
   {
+    inputManager.OnDeviceSelection -= InputManager_OnDeviceSelection;
+
     _aimButton.onClick.RemoveListener(inputManager.OnAimButtonPressed);
 
     _jumpButton.onClick.RemoveListener(inputManager.OnJumpButtonPressed);
@@ -56,9 +58,9 @@ public class MobileUI : MonoBehaviour
       inputManager.SetLookInput(_lookJoystick.Direction);
   }
 
-  private void SetupUI()
+  private void InputManager_OnDeviceSelection(InputType parInputType)
   {
-    _mobileUI?.SetActive(inputManager.CurrentInputType == InputType.Mobile);
+    _mobileUI.SetActive(parInputType == InputType.Mobile);
   }
 
   private void AddEventTrigger(EventTrigger trigger, EventTriggerType type, UnityAction<BaseEventData> callback)

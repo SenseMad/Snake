@@ -77,7 +77,9 @@ public class SteamManager : MonoBehaviour
 			Application.Quit();
 			return;
 		}
+		#if !UNITY_WEBGL
 		m_bInitialized = SteamAPI.Init();
+		#endif
 		if (!m_bInitialized)
 		{
 			UnityEngine.Debug.LogError("[Steamworks.NET] SteamAPI_Init() failed. Refer to Valve's documentation or the comment above this line for more information.", this);

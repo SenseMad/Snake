@@ -61,6 +61,10 @@ public class OrbitCam : MonoBehaviour
 	{
 		if ((bool)target)
 		{
+			if ((Input.GetMouseButton(1) || Input.GetMouseButton(2)) && UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+			{
+				return;
+			}
 			if (Input.GetMouseButton(1) && !Input.GetKey(KeyCode.LeftShift))
 			{
 				velocityX += xSpeed * UnityEngine.Input.GetAxis("Mouse X") * 0.02f;

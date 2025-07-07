@@ -1,4 +1,5 @@
-//using GamePush;
+using GamePush;
+using System;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
@@ -24,18 +25,11 @@ public class InputManager : MonoBehaviour
   public bool JumpPressed { get; private set; }
   public bool DashPressed { get; private set; }
 
+  public event Action<InputType> OnDeviceSelection;
+
   private void Awake()
   {
-    if (_autoDetectPlatform)
-      DetectPlatform();
-
-    if (instance != null && instance != this)
-    {
-      Destroy(this);
-      return;
-    }
-
-    instance = GetComponent<InputManager>();
+    instance = this;
   }
 
   private void Start()
@@ -44,13 +38,27 @@ public class InputManager : MonoBehaviour
     isInitialized = true;
   }
 
+  private void OnEnable()
+  {
+    GamePushManager.Instance.OnGamePushInit += DetectPlatform;
+  }
+
+  private void OnDisable()
+  {
+    GamePushManager.Instance.OnGamePushInit -= DetectPlatform;
+  }
+
   private void DetectPlatform()
   {
-    _currentInputType = InputType.PC;
-    /*if (GP_Device.IsMobile())
-      _currentInputType = InputType.Mobile;
-    else
-      _currentInputType = InputType.PC;*/
+    if (_autoDetectPlatform)
+    {
+      if (GP_Device.IsMobile())
+        _currentInputType = InputType.Mobile;
+      else
+        _currentInputType = InputType.PC;
+    }
+
+    OnDeviceSelection?.Invoke(_currentInputType);
   }
 
   public void SetInputType(InputType inputType)

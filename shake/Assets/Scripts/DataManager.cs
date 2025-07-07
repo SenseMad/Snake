@@ -1,4 +1,6 @@
+#if !UNITY_WEBGL
 using Steamworks;
+#endif
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -210,10 +212,12 @@ public class DataManager : MonoBehaviour
   {
 	ES3.Save(GetSaveKeyName(), data, saveSettings);
 	ES3.CreateBackup(saveSettings);
+	#if !UNITY_WEBGL
 	if (SteamManager.Initialized)
 	{
 	  SteamUserStats.StoreStats();
 	}
+	#endif
 	PlayerPrefs.Save();
   }
 
@@ -236,10 +240,12 @@ public class DataManager : MonoBehaviour
 		data = new Data();
 	  }
 	}
+#if !UNITY_WEBGL
 	if (SteamManager.Initialized)
 	{
 	  SteamUserStats.RequestCurrentStats();
-	}
+  }
+#endif
   }
 
   public static void SetSavesIndex(int index)
@@ -270,11 +276,13 @@ public class DataManager : MonoBehaviour
 	if (AchievementAndStatisticsEnabled)
 	{
 	  bool pbAchieved;
+#if !UNITY_WEBGL
 	  if (SteamManager.Initialized && SteamUserStats.GetAchievement(achievementName, out pbAchieved) && !pbAchieved)
 	  {
 		SteamUserStats.SetAchievement(achievementName);
 		SteamUserStats.StoreStats();
 	  }
+#endif
 	  if (save)
 	  {
 		Save();
@@ -284,6 +292,7 @@ public class DataManager : MonoBehaviour
 
   public static void UpdateSteamStats()
   {
+#if !UNITY_WEBGL
 	if (SteamManager.Initialized)
 	{
 	  SteamUserStats.SetStat("stat_count_deaths", data.stat_count_deaths);
@@ -300,6 +309,7 @@ public class DataManager : MonoBehaviour
 	  SteamUserStats.SetStat("stat_levels_finished_05", data.stat_levels_finished_05);
 	  SteamUserStats.StoreStats();
 	}
+#endif
   }
 
   public static void CountPlayerDead()
@@ -528,14 +538,17 @@ public class DataManager : MonoBehaviour
 
   public static void ClearAchievement(string achievementName)
   {
+	#if !UNITY_WEBGL
 	if (SteamManager.Initialized)
 	{
 	  SteamUserStats.ClearAchievement(achievementName);
 	}
+	#endif
   }
 
   public static void ClearAllAchievements()
   {
+	#if !UNITY_WEBGL
 	if (SteamManager.Initialized)
 	{
 	  string[] array = new string[25]
@@ -571,5 +584,6 @@ public class DataManager : MonoBehaviour
 		SteamUserStats.ClearAchievement(array[i]);
 	  }
 	}
+	#endif
   }
 }
