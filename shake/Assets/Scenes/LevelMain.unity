@@ -2105,7 +2105,7 @@ MonoBehaviour:
   text: {fileID: 1369065823}
   textMesh: {fileID: 0}
   ChineseText: "\u67E5\u770B\u5E7F\u544A\u5E76\u83B7\u5F97\u4E00\u6B21\u6027\u8BBF\u95EE"
-  EnglishText: View ad and get one-time access
+  EnglishText: VIEW AD AND GET ONE-TIME ACCESS
 --- !u!114 &1369065823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2131,8 +2131,8 @@ MonoBehaviour:
     m_FontSize: 150
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 239
+    m_MinSize: 0
+    m_MaxSize: 150
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -10783,7 +10783,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 2b4f02863c9946e4aa252be9ca72161f, type: 3}
-    m_FontSize: 27
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
