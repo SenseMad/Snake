@@ -39,7 +39,9 @@ public class LevelInfo : MonoBehaviour
 	{
 	  countTexts[i].text = targetCount.ToString();
 	}
-	DataManager.SetEnteredLevel("Level" + currentLevelIndex.ToString());
+
+	if (!GameManager.Instance.LevelManager.DontSaveLevelNumber)
+	  DataManager.SetEnteredLevel("Level" + currentLevelIndex.ToString());
   }
 
   private void Update()

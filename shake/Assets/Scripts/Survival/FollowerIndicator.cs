@@ -18,8 +18,17 @@ public class FollowerIndicator : MonoBehaviour
   private Transform parent;
   private Vector3 offset;
 
+  private LevelManager levelManager;
+
+  private void Awake()
+  {
+    levelManager = GameManager.Instance.LevelManager;
+  }
+
   private void Start()
   {
+    gameObject.SetActive(levelManager != null && levelManager.SurvivalMode);
+
     parent = transform.parent;
     offset = transform.localPosition;
     transform.SetParent(null);
@@ -27,6 +36,9 @@ public class FollowerIndicator : MonoBehaviour
 
   private void Update()
   {
+    if (levelManager == null || !levelManager.SurvivalMode)
+      return;
+
     FindNearestEnemy();
 
     transform.position = parent.TransformPoint(offset);

@@ -76,6 +76,8 @@ public class GameManager : MonoBehaviour
 	{
 	  Init();
 	}
+
+	//DeleteDatas();
   }
 
   public void DeleteDatas()

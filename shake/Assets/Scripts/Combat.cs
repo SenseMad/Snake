@@ -206,10 +206,9 @@ public class Combat : MonoBehaviour
 
   public void Revival()
   {
-    if (!dead || !GameManager.Instance.LevelManager.SurvivalMode)
+    if (!GameManager.Instance.GamePushManager.IsInit || !dead || !GameManager.Instance.LevelManager.SurvivalMode)
       return;
 
-	Debug.Log("!");
     GP_Ads.ShowRewarded("SURVIVAL_REVIVE", OnRewardedReward, OnRewardedStart);
   }
 

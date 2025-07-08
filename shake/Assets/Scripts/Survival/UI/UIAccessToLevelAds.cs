@@ -26,7 +26,6 @@ public class UIAccessToLevelAds : MonoBehaviour
 
     _button.onClick.AddListener(levelManager.StartSurvivalZone);
 
-    _canvasGroup.alpha = 0f;
     _canvasGroup.gameObject.SetActive(false);
   }
 

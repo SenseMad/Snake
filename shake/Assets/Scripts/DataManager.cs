@@ -210,41 +210,59 @@ public class DataManager : MonoBehaviour
 
   public static void Save()
   {
-	ES3.Save(GetSaveKeyName(), data, saveSettings);
-	ES3.CreateBackup(saveSettings);
-	#if !UNITY_WEBGL
-	if (SteamManager.Initialized)
-	{
-	  SteamUserStats.StoreStats();
-	}
-	#endif
-	PlayerPrefs.Save();
+#if UNITY_WEBGL
+    // Сохраняем список пройденных уровней в PlayerPrefs как JSON
+    string levelsJson = JsonUtility.ToJson(new LevelsWrapper { levels = data.levelsEntered });
+    PlayerPrefs.SetString("levelsEntered", levelsJson);
+    PlayerPrefs.Save();
+#else
+    ES3.Save(GetSaveKeyName(), data, saveSettings);
+    ES3.CreateBackup(saveSettings);
+    #if !UNITY_WEBGL
+    if (SteamManager.Initialized)
+    {
+      SteamUserStats.StoreStats();
+    }
+    #endif
+    PlayerPrefs.Save();
+#endif
   }
 
   public static void Load()
   {
-	try
-	{
-	  data = ES3.Load(GetSaveKeyName(), new Data(), saveSettings);
-	}
-	catch
-	{
-	  if (ES3.RestoreBackup(saveSettings))
-	  {
-		data = ES3.Load(GetSaveKeyName(), new Data(), saveSettings);
-		UnityEngine.Debug.Log("Backup Restored!");
-	  }
-	  else
-	  {
-		UnityEngine.Debug.Log("Backup could not be restored as no backup exists.");
-		data = new Data();
-	  }
-	}
+#if UNITY_WEBGL
+    // Загружаем список пройденных уровней из PlayerPrefs
+    if (PlayerPrefs.HasKey("levelsEntered"))
+    {
+      string levelsJson = PlayerPrefs.GetString("levelsEntered");
+      LevelsWrapper wrapper = JsonUtility.FromJson<LevelsWrapper>(levelsJson);
+      if (wrapper != null && wrapper.levels != null)
+        data.levelsEntered = wrapper.levels;
+    }
+#else
+    try
+    {
+      data = ES3.Load(GetSaveKeyName(), new Data(), saveSettings);
+    }
+    catch
+    {
+      if (ES3.RestoreBackup(saveSettings))
+      {
+        data = ES3.Load(GetSaveKeyName(), new Data(), saveSettings);
+        UnityEngine.Debug.Log("Backup Restored!");
+      }
+      else
+      {
+        UnityEngine.Debug.Log("Backup could not be restored as no backup exists.");
+        data = new Data();
+      }
+    }
 #if !UNITY_WEBGL
-	if (SteamManager.Initialized)
-	{
-	  SteamUserStats.RequestCurrentStats();
-  }
+    if (SteamManager.Initialized)
+    {
+      SteamUserStats.RequestCurrentStats();
+    }
+#endif
 #endif
   }
 
@@ -269,6 +287,14 @@ public class DataManager : MonoBehaviour
 	{
 	  data.levelsEntered.Add(levelName);
 	}
+  }
+
+  public static void OpenAllLevels()
+  {
+	for (int i = 0; i < 8; i++)
+	{
+	  SetEnteredLevel("Level" + i.ToString());
+    }
   }
 
   public static void SetAchievement(string achievementName, bool save = true)
@@ -585,5 +611,11 @@ public class DataManager : MonoBehaviour
 	  }
 	}
 	#endif
+  }
+
+  [Serializable]
+  private class LevelsWrapper
+  {
+    public List<string> levels;
   }
 }

@@ -12,7 +12,7 @@ public class MobileUI : MonoBehaviour
   [SerializeField] private Button _shootButton;
   [SerializeField] private Button _aimButton;
   [SerializeField] private Button _jumpButton;
-  [SerializeField] private Button _dashButton;
+  [SerializeField] private Button _pauseButton;
 
   private InputManager inputManager;
 
@@ -38,6 +38,8 @@ public class MobileUI : MonoBehaviour
     _aimButton.onClick.AddListener(inputManager.OnAimButtonPressed);
 
     _jumpButton.onClick.AddListener(inputManager.OnJumpButtonPressed);
+
+    _pauseButton.onClick.AddListener(LevelManager.Pause);
   }
 
   private void OnDisable()
@@ -47,6 +49,8 @@ public class MobileUI : MonoBehaviour
     _aimButton.onClick.RemoveListener(inputManager.OnAimButtonPressed);
 
     _jumpButton.onClick.RemoveListener(inputManager.OnJumpButtonPressed);
+
+    _pauseButton.onClick.RemoveListener(LevelManager.Pause);
   }
 
   private void Update()

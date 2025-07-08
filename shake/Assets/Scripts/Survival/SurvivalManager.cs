@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public sealed class SurvivalManager : MonoBehaviour
 {
@@ -11,13 +13,39 @@ public sealed class SurvivalManager : MonoBehaviour
   [SerializeField] private LayerMask _mask;
 
   private int currentLevel = 1;
+  private int currentDiamond = 0;
   private int currentEnergy = 0;
 
   private EnemySpawner enemySpawner;
 
   private List<DropItemBase> listDropItems = new();
 
+  public event Action<int> OnChangeDiamond;
+  public event Action<int, int> OnChangeEnergy;
+
   public static SurvivalManager Instance => instance;
+
+  public int Goal => 2 * currentLevel;
+
+  public int CurrentDiamond
+  {
+    get => currentDiamond;
+    private set
+    {
+      currentDiamond = value;
+      OnChangeDiamond?.Invoke(value);
+    }
+  }
+
+  public int CurrentEnergy
+  {
+    get => currentEnergy;
+    private set
+    {
+      currentEnergy = value;
+      OnChangeEnergy?.Invoke(value, Goal);
+    }
+  }
 
   private void Awake()
   {
@@ -30,6 +58,14 @@ public sealed class SurvivalManager : MonoBehaviour
     }
 
     instance = this;
+
+    GameManager.Instance.LevelManager.InitializeSurvivalMode(this);
+  }
+
+  private void Start()
+  {
+    CurrentDiamond = 0;
+    CurrentEnergy = 0;
   }
 
   public void AddDropItem(DropItemBase parDropItem)
@@ -73,12 +109,13 @@ public sealed class SurvivalManager : MonoBehaviour
 
   public void CollectDiamond(int parEnergyValue, DropItemBase parDropItemBase)
   {
-    currentEnergy += parEnergyValue;
+    CurrentDiamond++;
+    CurrentEnergy += parEnergyValue;
 
-    if (currentEnergy >= 10 * currentLevel)
+    if (CurrentEnergy >= Goal)
     {
       currentLevel++;
-      currentEnergy = 0;
+      CurrentEnergy = 0;
 
       CreateFollower();
     }

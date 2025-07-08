@@ -75,7 +75,8 @@ public class FinishZone : MonoBehaviour
 	}
 	else if (!locked && Vector3.Distance(GameManager.Instance.LevelManager.Player.transform.position, base.transform.position) < radius)
 	{
-	  GameManager.Instance.LevelManager.gameMode = gameMode;
+      GameManager.Instance.LevelManager.NoSaveLevelNumber(false);
+      GameManager.Instance.LevelManager.gameMode = gameMode;
 	  GameManager.Instance.LevelManager.game3CType = game3CType;
 	  GameManager.Instance.LevelManager.TryLoadLevel(selectIndex);
 	}

@@ -10,6 +10,11 @@ public class UIManager : MonoBehaviour
   [SerializeField] private UIFailedPanel _failedPanel;
   [SerializeField] private UISuccessPanel _successPanel;
   [SerializeField] private UIAccessToLevelAds _accessToLevelAds;
+  [SerializeField] private UISurvivalPanel _uISurvivalPanel;
+
+  [Header("Objects")]
+  [SerializeField] private GameObject _remainObject;
+  [SerializeField] private GameObject _targetObject;
 
   [Space]
   [SerializeField]
@@ -53,6 +58,20 @@ public class UIManager : MonoBehaviour
   private void Awake()
   {
 	healthBarMat = healthBarImage.material;
+  }
+
+  private void OnEnable()
+  {
+    InputManager.Instance.OnDeviceSelection += Instance_OnDeviceSelection;
+
+    GameManager.Instance.LevelManager.OnStartSurvivalMode += LevelManager_OnStartSurvivalMode;
+  }
+
+  private void OnDisable()
+  {
+    InputManager.Instance.OnDeviceSelection -= Instance_OnDeviceSelection;
+
+    GameManager.Instance.LevelManager.OnStartSurvivalMode -= LevelManager_OnStartSurvivalMode;
   }
 
   public void Init(Camera _camera)
@@ -157,5 +176,18 @@ public class UIManager : MonoBehaviour
 	tempColor = _text.color;
 	tempColor.a = alpha;
 	_text.color = tempColor;
+  }
+
+  private void Instance_OnDeviceSelection(InputType obj)
+  {
+    mobileUI.SetActive(obj == InputType.Mobile);
+  }
+
+  private void LevelManager_OnStartSurvivalMode(bool parValue)
+  {
+    _remainObject.SetActive(!parValue);
+    _targetObject.SetActive(!parValue);
+
+    _uISurvivalPanel.SetActive(parValue);
   }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using GamePush;
+using System;
 
 public class LevelManager : MonoBehaviour
 {
@@ -103,7 +104,8 @@ public class LevelManager : MonoBehaviour
   public int EnemyKillCount => enemyKillCount;
 
   public bool SurvivalMode { get; private set; }
-
+  public bool DontSaveLevelNumber { get; private set; }
+  
   public gameStates GameState => gameState;
 
   public static bool Paused
@@ -142,6 +144,9 @@ public class LevelManager : MonoBehaviour
 	  return null;
 	}
   }
+
+  public event Action<bool> OnStartSurvivalMode;
+  public event Action<SurvivalManager> OnInitializeSurivalMode;
 
   public event PauseEventHandler onPauseChanged;
 
@@ -236,6 +241,9 @@ public class LevelManager : MonoBehaviour
 
   public void StartSurvivalZone()
   {
+    if (!GameManager.Instance.GamePushManager.IsInit || GameManager.Instance.GamePushManager.IsAdsRunning)
+      return;
+
     GP_Ads.ShowRewarded("SURVIVAL", StartAdsSurvivalZone, OnRewardedStart);
   }
 
@@ -249,9 +257,10 @@ public class LevelManager : MonoBehaviour
     switch (parValue)
     {
       case "SURVIVAL":
-        GameManager.Instance.LevelManager.SetSurvivalMode(true);
+		NoSaveLevelNumber(true);
+        SetSurvivalMode(true);
         GameManager.Instance.GamePushManager.SetAdsRunning(false);
-        GameManager.Instance.LevelManager.TryLoadLevel(999, false);
+        TryLoadLevel(999, false);
         break;
     }
   }
@@ -259,6 +268,18 @@ public class LevelManager : MonoBehaviour
   public void SetSurvivalMode(bool parValue)
   {
 	SurvivalMode = parValue;
+
+	OnStartSurvivalMode?.Invoke(parValue);
+  }
+
+  public void NoSaveLevelNumber(bool parValue)
+  {
+	DontSaveLevelNumber = parValue;
+  }
+
+  public void InitializeSurvivalMode(SurvivalManager parSurvivalManager)
+  {
+	OnInitializeSurivalMode?.Invoke(parSurvivalManager);
   }
 
   public void StartLevel(Vector3 _startPoint, int _targetCount)
