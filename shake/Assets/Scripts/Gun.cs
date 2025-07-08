@@ -137,7 +137,7 @@ public class Gun : MonoBehaviour
 	  if (InputManager.Instance != null)
 	  {
 		flag = (autoTrigger && InputManager.Instance.GetMouseButton(0)) || (!autoTrigger && InputManager.Instance.GetMouseButtonDown(0));
-	  }
+      }
 	  else
 	  {
 		flag = (autoTrigger && Input.GetMouseButton(0)) || (!autoTrigger && Input.GetMouseButtonDown(0));

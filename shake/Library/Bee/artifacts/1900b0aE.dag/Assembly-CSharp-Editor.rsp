@@ -358,7 +358,6 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/Assembly-CSharp.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/GamePush.Data.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/GamePush.Editor.ref.dll"
--r:"Library/Bee/artifacts/1900b0aE.dag/GamePush.Examples.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/GamePush.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.TextMeshPro.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.TextMeshPro.ref.dll"

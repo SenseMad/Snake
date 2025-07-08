@@ -23,12 +23,12 @@ public class MobileUI : MonoBehaviour
 
   private void Start()
   {
-    if (!_shootButton.gameObject.TryGetComponent<EventTrigger>(out var triggerShootButton))
+    /*if (!_shootButton.gameObject.TryGetComponent<EventTrigger>(out var triggerShootButton))
       triggerShootButton = _shootButton.gameObject.AddComponent<EventTrigger>();
 
     triggerShootButton.triggers.Clear();
     AddEventTrigger(triggerShootButton, EventTriggerType.PointerDown, _ => inputManager.OnShootButtonDown());
-    AddEventTrigger(triggerShootButton, EventTriggerType.PointerUp, _ => inputManager.OnShootButtonUp());
+    AddEventTrigger(triggerShootButton, EventTriggerType.PointerUp, _ => inputManager.OnShootButtonUp());*/
   }
 
   private void OnEnable()
@@ -60,6 +60,11 @@ public class MobileUI : MonoBehaviour
 
     if (_lookJoystick != null)
       inputManager.SetLookInput(_lookJoystick.Direction);
+
+    if (_lookJoystick.Direction != Vector2.zero)
+      inputManager.OnShootButtonDown();
+    else
+      inputManager.OnShootButtonUp();
   }
 
   private void InputManager_OnDeviceSelection(InputType parInputType)

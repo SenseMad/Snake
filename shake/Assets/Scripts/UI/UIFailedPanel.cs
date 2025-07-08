@@ -22,7 +22,7 @@ public class UIFailedPanel : MonoBehaviour
 
   private void OnDestroy()
   {
-    _restartButton.onClick.RemoveListener(levelManager.RestartLevel);
+    _restartButton.onClick.RemoveListener(RestartLevel);
     _revivalButton.onClick.RemoveListener(levelManager.Player.Combat.Revival);
   }
 
@@ -31,7 +31,7 @@ public class UIFailedPanel : MonoBehaviour
     levelManager = GameManager.Instance.LevelManager;
     inputManager = InputManager.Instance;
 
-    _restartButton.onClick.AddListener(levelManager.RestartLevel);
+    _restartButton.onClick.AddListener(RestartLevel);
     _revivalButton.onClick.AddListener(levelManager.Player.Combat.Revival);
 
     _canvasGroup.alpha = 0f;
@@ -71,5 +71,12 @@ public class UIFailedPanel : MonoBehaviour
   public void SetAlpha(float parAlpha)
   {
     _canvasGroup.alpha = parAlpha;
+  }
+
+  private void RestartLevel()
+  {
+    GameManager.Instance.UIManager.RestoreHUD();
+
+    levelManager.RestartLevel();
   }
 }

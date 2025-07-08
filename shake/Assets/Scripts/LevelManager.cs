@@ -217,7 +217,7 @@ public class LevelManager : MonoBehaviour
     {
       gameState = gameStates.playing;
       GameManager.Instance.CameraManager.RenderCamera.FadeIn();
-      pointer.gameObject.SetActive(true);
+      pointer.gameObject.SetActive(InputManager.Instance.IsPC);
       GameManager.Instance.TimeScaleManager.ResetTimeScales();
     }
   }
@@ -293,7 +293,7 @@ public class LevelManager : MonoBehaviour
 	gameState = gameStates.playing;
 	player = Instantiate(playerPfb, _startPoint, Quaternion.identity);
     pointer = Instantiate(pointerPfb);
-	GameManager.Instance.CameraManager.Init(player, pointer.transform);
+    GameManager.Instance.CameraManager.Init(player, pointer.transform);
 	pointer.virtualCamera = GameManager.Instance.CameraManager.TopDownCameraArm.VirtualCamera;
 	GameManager.Instance.TimeScaleManager.ResetTimeScales();
 	enemyKillCount = 0;
