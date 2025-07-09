@@ -16,7 +16,7 @@ public class UISuccessPanel : MonoBehaviour
 
   private void OnDestroy()
   {
-    _button.onClick.RemoveListener(levelManager.NextLevel);
+    _button.onClick.RemoveListener(Success);
   }
 
   public void Initialize()
@@ -24,7 +24,7 @@ public class UISuccessPanel : MonoBehaviour
     levelManager = GameManager.Instance.LevelManager;
     inputManager = InputManager.Instance;
 
-    _button.onClick.AddListener(levelManager.NextLevel);
+    _button.onClick.AddListener(Success);
 
     _canvasGroup.alpha = 0f;
     _canvasGroup.gameObject.SetActive(false);
@@ -50,5 +50,12 @@ public class UISuccessPanel : MonoBehaviour
   public void SetAlpha(float parAlpha)
   {
     _canvasGroup.alpha = parAlpha;
+  }
+
+  public void Success()
+  {
+    GameManager.Instance.UIManager.RestoreHUD();
+
+    levelManager.NextLevel();
   }
 }

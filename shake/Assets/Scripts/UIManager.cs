@@ -130,8 +130,7 @@ public class UIManager : MonoBehaviour
 
     hudPanel.SetActive(true);
 
-    if (InputManager.Instance.CurrentInputType == InputType.Mobile)
-      mobileUI.SetActive(true);
+    mobileUI.SetActive(InputManager.Instance.IsMobile);
   }
 
   public void Defeat(string _defeatString)
@@ -142,8 +141,7 @@ public class UIManager : MonoBehaviour
     _failedPanel.Show(_defeatString);
     hudPanel.SetActive(false);
 
-	if (InputManager.Instance.CurrentInputType == InputType.Mobile)
-	  mobileUI.SetActive(false);
+	mobileUI.SetActive(false);
   }
 
   public void Success()
@@ -154,7 +152,7 @@ public class UIManager : MonoBehaviour
 	_successPanel.Show();
     hudPanel.SetActive(false);
 
-    if (InputManager.Instance.CurrentInputType == InputType.Mobile)
+    if (InputManager.Instance.IsMobile)
       mobileUI.SetActive(false);
   }
 

@@ -1,6 +1,7 @@
 using Com.LuisPedroFonseca.ProCamera2D;
 using GamePush;
 using System;
+using System.Reflection;
 using UnityEngine;
 
 public class Combat : MonoBehaviour
@@ -87,6 +88,7 @@ public class Combat : MonoBehaviour
   public float HealthPercent => Mathf.Clamp01((float)health / (float)maxHealth);
 
   public event Action<Combat> OnDied;
+  public event Action OnRevive;
 
   private void Awake()
   {
@@ -459,9 +461,10 @@ public class Combat : MonoBehaviour
         Revive(transform.position);
         gameManager.LevelManager.ResumeGame();
         gameManager.CameraManager.TopDownCameraArm.RestoreCameraState(transform);
-        gameManager.UIManager.RestoreHUD();
+        gameManager.UIManager.RestoreHUD(); 
         gameManager.UIManager.Revival(false);
         GameManager.Instance.GamePushManager.SetAdsRunning(false);
+		OnRevive?.Invoke();
         break;
     }
   }

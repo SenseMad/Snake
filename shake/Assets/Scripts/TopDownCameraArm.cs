@@ -147,8 +147,6 @@ public class TopDownCameraArm : MonoBehaviour
     transform.rotation = normalRotation;
     virtualCamera.fieldOfView = normalFov;
 
-    startHeight = normalPosition.y - newTarget.position.y;
-
     if (pointerReceiver != null)
       pointerReceiver.position = newTarget.position;
   }

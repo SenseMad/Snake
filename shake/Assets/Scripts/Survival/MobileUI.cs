@@ -51,6 +51,11 @@ public class MobileUI : MonoBehaviour
     _jumpButton.onClick.RemoveListener(inputManager.OnJumpButtonPressed);
 
     _pauseButton.onClick.RemoveListener(LevelManager.Pause);
+
+    _moveJoystick.ResetJoystick();
+    _lookJoystick.ResetJoystick();
+
+    inputManager.OnShootButtonUp();
   }
 
   private void Update()
@@ -70,12 +75,15 @@ public class MobileUI : MonoBehaviour
   private void InputManager_OnDeviceSelection(InputType parInputType)
   {
     _mobileUI.SetActive(parInputType == InputType.Mobile);
+
+    _aimButton.gameObject.SetActive(parInputType == InputType.Mobile && GameManager.Instance.LevelManager.game3CType == LevelManager.game3Ctypes.fps);
+    _jumpButton.gameObject.SetActive(parInputType == InputType.Mobile && GameManager.Instance.LevelManager.game3CType == LevelManager.game3Ctypes.fps);
   }
 
-  private void AddEventTrigger(EventTrigger trigger, EventTriggerType type, UnityAction<BaseEventData> callback)
+  /*private void AddEventTrigger(EventTrigger trigger, EventTriggerType type, UnityAction<BaseEventData> callback)
   {
     var entry = new EventTrigger.Entry { eventID = type };
     entry.callback.AddListener(callback);
     trigger.triggers.Add(entry);
-  }
+  }*/
 }

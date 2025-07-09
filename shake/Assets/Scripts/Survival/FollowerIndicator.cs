@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FollowerIndicator : MonoBehaviour
@@ -12,7 +10,7 @@ public class FollowerIndicator : MonoBehaviour
 
   [SerializeField] private GameObject _triObject;
 
-  private Transform nearestEnemy;
+  private Transform nearestFollow;
   private Collider[] hits = new Collider[5];
 
   private Transform parent;
@@ -39,13 +37,13 @@ public class FollowerIndicator : MonoBehaviour
     if (levelManager == null || !levelManager.SurvivalMode)
       return;
 
-    FindNearestEnemy();
+    FindNearestFollow();
 
     transform.position = parent.TransformPoint(offset);
 
-    if (nearestEnemy != null)
+    if (nearestFollow != null)
     {
-      Vector3 direction = nearestEnemy.position - transform.position;
+      Vector3 direction = nearestFollow.position - transform.position;
       direction.y = 0;
 
       if (direction.sqrMagnitude > 0.001f)
@@ -60,7 +58,7 @@ public class FollowerIndicator : MonoBehaviour
     }
   }
 
-  private void FindNearestEnemy()
+  private void FindNearestFollow()
   {
     int count = Physics.OverlapSphereNonAlloc(transform.position, _detectionRadius, hits, _followerMask);
 
@@ -68,12 +66,12 @@ public class FollowerIndicator : MonoBehaviour
 
     if (count <= 0)
     {
-      nearestEnemy = null;
+      nearestFollow = null;
       return;
     }
 
     float distance = Mathf.Infinity;
-    nearestEnemy = null;
+    nearestFollow = null;
 
     for (int i = 0; i < count; i++)
     {
@@ -82,7 +80,7 @@ public class FollowerIndicator : MonoBehaviour
       if (distanceSqr < distance)
       {
         distance = distanceSqr;
-        nearestEnemy = hits[i].transform;
+        nearestFollow = hits[i].transform;
       }
     }
   }

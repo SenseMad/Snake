@@ -154,7 +154,6 @@ public class PlayerControl : MonoBehaviour
     Vector2 lookInput = Vector2.zero;
     Vector3 moveDir = Vector3.zero;
 
-    // Движение через клавиши
     if (Input.GetKey(KeyCode.A)) moveDir += Vector3.left;
     if (Input.GetKey(KeyCode.D)) moveDir += Vector3.right;
     if (Input.GetKey(KeyCode.W)) moveDir += Vector3.forward;
@@ -162,22 +161,15 @@ public class PlayerControl : MonoBehaviour
 
     moveDir = moveDir.normalized;
 
-    // LookInput из InputManager
     if (InputManager.Instance != null)
-    {
       lookInput = InputManager.Instance.LookInput;
-    }
 
-    // Движение с учётом поворота камеры
     float currentSpeed = dashMode ? fastSpeed : speed;
     Vector3 camRot = Quaternion.Euler(0f, GameManager.Instance.CameraManager.TopDownCameraArm.transform.rotation.eulerAngles.y, 0f) * moveDir;
     velocityTemp = camRot.normalized * currentSpeed;
     velocityTemp.y = rb.velocity.y;
     rb.velocity = velocityTemp;
 
-    Debug.DrawLine(transform.position, transform.position + rb.velocity);
-
-    // 🔽 Вот ЗДЕСЬ блок для приоритетного поворота
     bool rotated = false;
 
     if (lookInput.sqrMagnitude > 0.001f)
@@ -188,11 +180,8 @@ public class PlayerControl : MonoBehaviour
     }
 
     if (!rotated && moveDir.sqrMagnitude > 0.01f)
-    {
       transform.rotation = Quaternion.LookRotation(moveDir, Vector3.up);
-    }
 
-    // Dash по направлению взгляда
     Vector3 forwardDir = FCTool.Vector3YToZero(transform.forward).normalized;
     UpdateDash(forwardDir);
   }*/
@@ -231,7 +220,6 @@ public class PlayerControl : MonoBehaviour
       }
     }
 
-    // Движение (общая логика)
     float currentSpeed = dashMode ? fastSpeed : speed;
     Vector3 camRot = Quaternion.Euler(0f, GameManager.Instance.CameraManager.TopDownCameraArm.transform.rotation.eulerAngles.y, 0f) * moveDir;
     velocityTemp = camRot.normalized * currentSpeed;
@@ -240,20 +228,32 @@ public class PlayerControl : MonoBehaviour
 
     if (InputManager.Instance != null && InputManager.Instance.IsMobile)
     {
-      if (lookInput.sqrMagnitude > 0.01f)
+      bool rotated = false;
+
+      /*if (lookInput.sqrMagnitude > 0.001f)
       {
         Vector3 lookDir = new Vector3(lookInput.x, 0f, lookInput.y);
         transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
-      }
-      else if (moveDir.sqrMagnitude > 0.01f)
+        rotated = true;
+      }*/
+      if (lookInput.sqrMagnitude > 0.001f)
       {
-        transform.rotation = Quaternion.LookRotation(moveDir, Vector3.up);
+        Vector3 localLook = new Vector3(lookInput.x, 0f, lookInput.y);
+
+        Quaternion camYRot = Quaternion.Euler(0f, GameManager.Instance.CameraManager.TopDownCameraArm.transform.eulerAngles.y, 0f);
+        Vector3 worldLookDir = camYRot * localLook;
+
+        transform.rotation = Quaternion.LookRotation(worldLookDir.normalized, Vector3.up);
+        rotated = true;
       }
+
+      if (!rotated && moveDir.sqrMagnitude > 0.01f)
+        transform.rotation = Quaternion.LookRotation(moveDir, Vector3.up);
     }
 
     Vector3 forwardDir = FCTool.Vector3YToZero(transform.forward).normalized;
     UpdateDash(forwardDir);
-  }   
+  }
 
   private void UpdateFpsMovement()
   {

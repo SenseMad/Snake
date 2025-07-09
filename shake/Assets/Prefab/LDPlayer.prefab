@@ -2864,6 +2864,7 @@ MonoBehaviour:
   subAimers:
   - {fileID: 1791768366284264381}
   aimZonFpsMode: 0
+  _isPlayer: 1
 --- !u!114 &1791768366284264443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5636,6 +5637,7 @@ MonoBehaviour:
   playerAimer: 1
   subAimers: []
   aimZonFpsMode: 0
+  _isPlayer: 0
 --- !u!1 &1791768364388438448
 GameObject:
   m_ObjectHideFlags: 0
@@ -5806,6 +5808,7 @@ MonoBehaviour:
   subAimers:
   - {fileID: 1791768366284264384}
   aimZonFpsMode: 0
+  _isPlayer: 0
 --- !u!1 &1791768364388438469
 GameObject:
   m_ObjectHideFlags: 0
